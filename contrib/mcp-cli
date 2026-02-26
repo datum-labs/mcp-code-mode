@@ -1,0 +1,55 @@
+# mcp-cli usage for datum-code-mode-mcp
+
+This document shows how to use mcp-cli with the local Datum MCP server.
+
+## Prereqs
+
+- Server running: `npm run dev`
+- Login in a browser: `http://localhost:8787/auth/login`
+- Create a short-lived CLI token: `http://localhost:8787/auth/token`
+
+The `/auth/token` response includes an `authorization` field you can paste into your mcp-cli config.
+
+## Example mcp-cli config
+
+```json
+{
+  "mcpServers": {
+    "datum-code-mode": {
+      "url": "http://localhost:8787/mcp",
+      "headers": {
+        "Authorization": "Bearer <token-from-/auth/token>"
+      }
+    }
+  }
+}
+```
+
+If your mcp-cli build does not support `headers`, use a client that can set HTTP headers, or add the cookie header instead.
+
+## Inspect tools
+
+```bash
+mcp-cli info datum-code-mode
+```
+
+## Example: search
+
+```bash
+mcp-cli call datum-code-mode search '{
+  "code": "async () => {\n  const results = [];\n  for (const [path, methods] of Object.entries(spec.paths)) {\n    for (const [method, op] of Object.entries(methods)) {\n      if (op.tags?.some(t => t.toLowerCase() === \"iam\")) {\n        results.push({ method: method.toUpperCase(), path, summary: op.summary });\n      }\n    }\n  }\n  return results.slice(0, 5);\n}"
+}'
+```
+
+## Example: execute
+
+```bash
+mcp-cli call datum-code-mode execute '{
+  "code": "async () => {\n  return datum.request({ method: \"GET\", path: \"/apis/compute.miloapis.com/v1alpha1/projects\" });\n}"
+}'
+```
+
+## Troubleshooting
+
+- `401 Not authenticated`: refresh the bearer token from `/auth/token` and update your config.
+- `Invalid JSON in tool arguments`: make sure your JSON is valid (double quotes, escaped newlines).

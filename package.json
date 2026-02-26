@@ -1,0 +1,32 @@
+{
+  "name": "datum-code-mode-mcp",
+  "version": "0.1.0",
+  "description": "MCP server for the Datum API using code mode",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx src/index.ts",
+    "typecheck": "tsc --noEmit",
+    "lint": "oxlint src/",
+    "format": "oxfmt --write src/",
+    "format:check": "oxfmt --check src/",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "check": "npm run format:check && npm run lint && npm run typecheck && npm run test",
+    "seed:local": "tsx scripts/seed-local.ts"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.26.0",
+    "@hono/node-server": "^1.13.3",
+    "hono": "^4.11.9",
+    "openid-client": "^6.5.2",
+    "zod": "^4.3.5"
+  },
+  "devDependencies": {
+    "@types/node": "^25.0.6",
+    "oxfmt": "^0.31.0",
+    "oxlint": "^1.46.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.0",
+    "vitest": "3.2"
+  }
+}

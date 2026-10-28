@@ -1,4 +1,4 @@
 prompts
 data
+.env
 node_modules
-config.bat
